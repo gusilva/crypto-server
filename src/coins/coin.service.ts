@@ -8,7 +8,15 @@ import { CoinDto } from './coin.dto';
 export class CoinService {
   constructor(@InjectModel('Coin') private coinModel: Model<CoinModel>) {}
 
-  async listCoins(): Promise<CoinDto[]> {
-    return this.coinModel.find({});
+  async groupCoinById(): Promise<CoinDto[]> {
+    // return this.coinModel.find({});
+    return this.coinModel.aggregate([
+      {
+        $group: {
+          _id: '$id',
+          amount: { $sum: '$amount' },
+        },
+      },
+    ]);
   }
 }

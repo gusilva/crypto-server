@@ -15,6 +15,6 @@ export class CoinController {
     type: [CoinDto],
   })
   async all(): Promise<CoinDto[]> {
-    return this.coinService.listCoins();
+    return this.coinService.groupCoinById();
   }
 }
