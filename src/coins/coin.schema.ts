@@ -26,7 +26,7 @@ CoinSchema.set('toJSON', {
 export interface CoinModel extends Document {
   id: string;
   symbol: string;
-  amount: string;
+  amount: number;
 }
 
 export interface AggregatedCoinModel {

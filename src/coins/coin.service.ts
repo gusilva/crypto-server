@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CoinModel } from './coin.schema';
-import { CoinDto } from './coin.dto';
+import { CoinDto, UpdateCoinDto } from './coin.dto';
 
 @Injectable()
 export class CoinService {
@@ -21,5 +21,16 @@ export class CoinService {
     } else {
       return this.coinModel.create(coinDto);
     }
+  }
+
+  async updateCoin(id: string, { amount }: UpdateCoinDto): Promise<CoinModel> {
+    const coin = await this.findCoinById(id);
+    coin.amount = amount;
+
+    return coin.save();
+  }
+
+  private async findCoinById(id: string): Promise<CoinModel> {
+    return this.coinModel.findOne({ id }).exec();
   }
 }
