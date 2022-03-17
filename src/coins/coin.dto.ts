@@ -5,8 +5,10 @@ export class CoinDto {
   id: string;
 
   @ApiProperty()
-  symbol: string;
+  amount: number;
+}
 
+export class UpdateCoinDto {
   @ApiProperty()
   amount: number;
 }
