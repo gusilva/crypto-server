@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { CoinService } from './coin.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CoinDto, UpdateCoinDto } from './coin.dto';
@@ -24,5 +32,10 @@ export class CoinController {
   @ApiOperation({ description: 'Update coin' })
   async update(@Param('id') id: string, @Body() coinDto: UpdateCoinDto) {
     return this.coinService.updateCoin(id, coinDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.coinService.deleteCoin(id);
   }
 }
