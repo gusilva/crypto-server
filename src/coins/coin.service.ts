@@ -1,36 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AggregatedCoinModel, CoinModel } from './coin.schema';
+import { CoinModel } from './coin.schema';
 import { CoinDto } from './coin.dto';
 
 @Injectable()
 export class CoinService {
   constructor(@InjectModel('Coin') private coinModel: Model<CoinModel>) {}
 
-  async groupCoinById(): Promise<CoinDto[]> {
-    const coins = await this.coinModel.aggregate([
-      {
-        $group: {
-          _id: {
-            id: '$id',
-            symbol: '$symbol',
-          },
-          amount: { $sum: '$amount' },
-        },
-      },
-    ]);
-
-    return coins.map(CoinService.convertToCoinDto);
+  async listAllCoins(): Promise<CoinModel[]> {
+    return this.coinModel.find({}).exec();
   }
 
-  private static convertToCoinDto({
-    _id,
-    amount,
-  }: AggregatedCoinModel): CoinDto {
-    return {
-      ..._id,
-      amount,
-    };
+  async addCoin(coinDto: CoinDto): Promise<CoinModel> {
+    const coin = await this.coinModel.findOne({ id: coinDto.id }).exec();
+
+    if (coin) {
+      coin.amount = coin.amount + coinDto.amount;
+      return coin.save();
+    } else {
+      return this.coinModel.create(coinDto);
+    }
   }
 }
