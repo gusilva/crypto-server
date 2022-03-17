@@ -1,4 +1,4 @@
-import { Document, Model, model, Schema } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 
 export const CoinSchema = new Schema({
   id: {
@@ -15,20 +15,13 @@ export const CoinSchema = new Schema({
   },
 });
 
-CoinSchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: function (doc, ret) {
-    delete ret._id;
-  },
-});
-
 export interface CoinModel extends Document {
   id: string;
   symbol: string;
   amount: string;
 }
 
-const Coin: Model<CoinModel> = model<CoinModel>('coin', CoinSchema);
-
-export default Coin;
+export interface AggregatedCoinModel {
+  _id: Omit<CoinModel, 'amount'>;
+  amount: number;
+}
