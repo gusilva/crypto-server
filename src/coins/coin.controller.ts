@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CoinService } from './coin.service';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CoinDto } from './coin.dto';
 
 @ApiTags('Coins')
@@ -10,11 +10,17 @@ export class CoinController {
 
   @Get()
   @ApiOperation({ description: "Find all the coin's records" })
-  @ApiOkResponse({
-    description: 'Retrieve coin document(s)',
-    type: [CoinDto],
+  async all() {
+    return this.coinService.listAllCoins();
+  }
+
+  @Post()
+  @ApiOperation({ description: 'Update coin' })
+  @ApiCreatedResponse({
+    description: 'Coin document',
+    type: CoinDto,
   })
-  async all(): Promise<CoinDto[]> {
-    return this.coinService.groupCoinById();
+  async add(@Body() coinDto: CoinDto) {
+    return this.coinService.addCoin(coinDto);
   }
 }

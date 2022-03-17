@@ -15,6 +15,14 @@ export const CoinSchema = new Schema({
   },
 });
 
+CoinSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    delete ret._id;
+  },
+});
+
 export interface CoinModel extends Document {
   id: string;
   symbol: string;
