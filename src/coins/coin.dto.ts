@@ -5,6 +5,9 @@ export class CoinDto {
   id: string;
 
   @ApiProperty()
+  symbol: string;
+
+  @ApiProperty()
   amount: number;
 }
 
