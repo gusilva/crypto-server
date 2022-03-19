@@ -30,8 +30,8 @@ export class CoinService {
     return coin.save();
   }
 
-  async deleteCoin(id: string): Promise<void> {
-    await this.coinModel.findOneAndDelete({ id }).exec();
+  async deleteCoin(id: string): Promise<CoinModel> {
+    return await this.coinModel.findOneAndDelete({ id }).exec();
   }
 
   private async findCoinById(id: string): Promise<CoinModel> {
